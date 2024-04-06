@@ -91,14 +91,42 @@ char *cmd_lookup(char *cmd, char **newenv)
 	return current;
 }
 
-int cmd_handle(char *cmd, char **env)
-{
-	char ** arr = __slice(get_path(env));
 
+void esh(char **arr)
+{
+	if (!arr)
+	{
+		printf("null array\n");
+		return ;
+	}
 	for (int i = 0; arr[i]; i++)
 	{
 		printf("%s\n", arr[i]);
 	}
-	ft_free_split(arr);
-	return 0;
+}
+
+
+t_cmds cmd_handle(char **av, char **newenv)
+{
+	t_cmds res;
+
+	res.left = ft_split(av[2], ' ');
+	res.right = ft_split(av[3], ' ');
+
+	char *c1 = cmd_lookup(res.left[0], newenv);
+	char *c2 = cmd_lookup(res.right[0], newenv);
+
+
+	if (!c1 || !c2)
+	{
+		ft_free_split(res.left);
+		ft_free_split(res.right);
+		mah();
+	}
+
+	free(res.left[0]);
+	res.left[0] = c1;
+	free(res.right[0]);
+	res.right[0] = c2;
+	return res;
 }

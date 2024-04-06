@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:43:17 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/05 20:20:41 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/06 16:55:14 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,25 @@
 # define PIPEX_H
 
 # include "ft_printf.h"
-#include <errno.h>
+# include <errno.h>
+# include <fcntl.h>
 
-void child(char **cmd, char **newenv, int *fd, int fileno);
+
+typedef struct s_cmd
+{
+	char **left;
+	char **right;
+}	t_cmds;
+
+
+int open_file(char *name, int mode);
 void pipex(int ac, char **av, char **env);
-void pipex_free(char *c1, char *c2, char **newenv);
-void pipex_wait(int *fd, int pid, int pid2);
-
+void pipex_free(t_cmds cmds, int * fd, char **newenv);
+void pipex_wait(int pid, int pid2);
 
 char *get_path(char **env);
 char **__slice(char *path);
-int cmd_handle(char *cmd, char **env);
+t_cmds cmd_handle(char **av, char **newenv);
 
 char *cmd_lookup(char *cmd, char **newenv);
 char *current_lookup(char *cmd, char *path);
