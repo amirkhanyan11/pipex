@@ -45,6 +45,14 @@ char	*ft_append(char *left, char  * right)
 	return target;
 }
 
+int iscmd(char *cmd, char **newenv)
+{
+	char *ret = cmd_lookup(cmd, newenv);
+
+	free(ret);
+
+	return (NULL != ret);
+}
 
 char **__slice(char *path)
 {
@@ -65,8 +73,6 @@ char *current_lookup(char *cmd, char *path)
 	path = ft_strdup(path);
 	path = ft_append(path, "/");
 	path = ft_append(path, cmd);
-
-	// printf("%s\n", path);
 
 	if (0 == access(path, F_OK))
 		return path;

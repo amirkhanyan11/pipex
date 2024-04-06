@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:43:17 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/06 16:55:14 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/06 19:05:21 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_cmd
 
 
 int open_file(char *name, int mode);
-void pipex(int ac, char **av, char **env);
+void pipex(int ac, char **av, char **env, int ffile, int sfile);
 void pipex_free(t_cmds cmds, int * fd, char **newenv);
 void pipex_wait(int pid, int pid2);
 
@@ -37,7 +37,7 @@ t_cmds cmd_handle(char **av, char **newenv);
 char *cmd_lookup(char *cmd, char **newenv);
 char *current_lookup(char *cmd, char *path);
 char	*ft_append(char *left, char  * right);
-
+int iscmd(char *cmd, char **newenv);
 
 void mah();
 
