@@ -5,24 +5,20 @@
 
 void handle_files(int ffile, int sfile)
 {
-	if (ffile != 0)
-		close(ffile);
-	if (sfile != 1)
-		close(sfile);
+	close(ffile);
+	close(sfile);
 }
 
-void pipex(int ac, char **av, char **env, int ffile, int sfile)
+void pipex(char **av, char **env)
 {
 	int fd[2];
 
 	char **newenv = __slice(get_path(env));
 	t_cmds cmds = cmd_handle(av, newenv);
 
-	if (ffile != STDIN_FILENO)
-		ffile = open_file(av[1], 0);
+	int ffile = open_file(av[1], 0);
 
-	if (sfile != STDOUT_FILENO)
-		sfile = open_file(av[4], 1);
+	int sfile = open_file(av[4], 1);
 
 	if (-1 == pipe(fd))
 		mah();
@@ -39,7 +35,7 @@ void pipex(int ac, char **av, char **env, int ffile, int sfile)
 
 		handle_files(ffile, sfile);
 
-		if (-1 == execve(cmds.left[0], cmds.left, newenv))
+		if (-1 == execve(cmds.left[0], cmds.left, env))
 			mah();
 	}
 
@@ -55,44 +51,28 @@ void pipex(int ac, char **av, char **env, int ffile, int sfile)
 
 		handle_files(ffile, sfile);
 
-		if (-1 == execve(cmds.right[0], cmds.right, newenv))
+		if (-1 == execve(cmds.right[0], cmds.right, env))
 			mah();
 	}
 
 	handle_files(ffile, sfile);
 	pipex_free(cmds, fd, newenv);
-	pipex_wait(pid, pid2);
+	pipex_wait(pid, pid);
+
 }
+
 
 // ./pipex file1 cmd1 cmd2 file2
 
 int main(int ac, char **av, char **env)
 {
-	int ffile = STDIN_FILENO;
-	int sfile = STDOUT_FILENO;
-
-	if (ac < 3 || ac > 5)
+	if (ac != 5)
 	{
-		perror("wrong arguments\n");
+		perror ("Wrong arguments!\n");
 		exit(EXIT_FAILURE);
 	}
 
-	else if (ac == 5)
-	{
-		ffile = -1;
-		sfile = -1;
-	}
-
-	else if (ac == 4)
-	{
-		if (!iscmd(av[1], env) && iscmd(av[2], env) && !iscmd(av[3], env))
-			ffile = -1;
-		else
-			return -1;
-	}
-
-
-	pipex(ac, av, env, ffile, sfile);
+	pipex(av, env);
 
 	return 0;
 }

@@ -45,15 +45,6 @@ char	*ft_append(char *left, char  * right)
 	return target;
 }
 
-int iscmd(char *cmd, char **newenv)
-{
-	char *ret = cmd_lookup(cmd, newenv);
-
-	free(ret);
-
-	return (NULL != ret);
-}
-
 char **__slice(char *path)
 {
 	char **arr = ft_split(path, ':');
@@ -97,21 +88,6 @@ char *cmd_lookup(char *cmd, char **newenv)
 	return current;
 }
 
-
-void esh(char **arr)
-{
-	if (!arr)
-	{
-		printf("null array\n");
-		return ;
-	}
-	for (int i = 0; arr[i]; i++)
-	{
-		printf("%s\n", arr[i]);
-	}
-}
-
-
 t_cmds cmd_handle(char **av, char **newenv)
 {
 	t_cmds res;
@@ -121,14 +97,6 @@ t_cmds cmd_handle(char **av, char **newenv)
 
 	char *c1 = cmd_lookup(res.left[0], newenv);
 	char *c2 = cmd_lookup(res.right[0], newenv);
-
-
-	if (!c1 || !c2)
-	{
-		ft_free_split(res.left);
-		ft_free_split(res.right);
-		mah();
-	}
 
 	free(res.left[0]);
 	res.left[0] = c1;

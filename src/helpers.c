@@ -32,10 +32,7 @@ int open_file(char *name, int mode)
 		fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 
 	if (-1 == fd)
-	{
-		printf("failed to open %s\n", name);
 		mah();
-	}
 
 	return fd;
 }

@@ -16,6 +16,8 @@
 # include "ft_printf.h"
 # include <errno.h>
 # include <fcntl.h>
+#include <sys/types.h> 
+#include <sys/wait.h>
 
 
 typedef struct s_cmd
@@ -26,7 +28,7 @@ typedef struct s_cmd
 
 
 int open_file(char *name, int mode);
-void pipex(int ac, char **av, char **env, int ffile, int sfile);
+void pipex(char **av, char **env);
 void pipex_free(t_cmds cmds, int * fd, char **newenv);
 void pipex_wait(int pid, int pid2);
 
