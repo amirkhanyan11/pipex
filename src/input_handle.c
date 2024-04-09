@@ -53,9 +53,9 @@ char **__slice(char *path)
 }
 
 
-void mah()
+void mah(int err)
 {
-	perror(strerror(errno));
+	perror(strerror(err));
 	exit(EXIT_FAILURE);
 }
 
@@ -98,9 +98,18 @@ t_cmds cmd_handle(char **av, char **newenv)
 	char *c1 = cmd_lookup(res.left[0], newenv);
 	char *c2 = cmd_lookup(res.right[0], newenv);
 
-	free(res.left[0]);
-	res.left[0] = c1;
-	free(res.right[0]);
-	res.right[0] = c2;
+	if (!c1 || !c2)
+		perror("command not found");
+	
+	if (c1)
+	{
+		free(res.left[0]);
+		res.left[0] = c1;
+	}
+	if (c2)
+	{
+		free(res.right[0]);
+		res.right[0] = c2;
+	}
 	return res;
 }

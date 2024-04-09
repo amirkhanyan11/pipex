@@ -28,9 +28,9 @@ typedef struct s_cmd
 
 
 int open_file(char *name, int mode);
-void pipex(char **av, char **env);
+int pipex(char **av, char **env);
 void pipex_free(t_cmds cmds, int * fd, char **newenv);
-void pipex_wait(int pid, int pid2);
+void pipex_wait(int pid, int pid2, int *status);
 
 char *get_path(char **env);
 char **__slice(char *path);
@@ -41,7 +41,7 @@ char *current_lookup(char *cmd, char *path);
 char	*ft_append(char *left, char  * right);
 int iscmd(char *cmd, char **newenv);
 
-void mah();
+void mah(int err);
 
 
 #endif // PIPEX_H

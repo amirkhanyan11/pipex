@@ -25,20 +25,21 @@ void pipex_free(t_cmds cmds, int * fd, char **newenv)
 int open_file(char *name, int mode)
 {
 	int fd;
+
 	if (0 == mode)
 		fd = open(name, O_RDONLY);
 
 	else
 		fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 
-	if (-1 == fd)
-		mah();
+	if (0 != mode && -1 == fd)
+		mah(errno);
 
 	return fd;
 }
 
-void pipex_wait(int pid, int pid2)
+void pipex_wait(int pid, int pid2, int *status)
 {
 	waitpid(pid, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	waitpid(pid2, status, 0);
 }

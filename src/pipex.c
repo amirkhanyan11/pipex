@@ -9,7 +9,7 @@ void handle_files(int ffile, int sfile)
 	close(sfile);
 }
 
-void pipex(char **av, char **env)
+int pipex(char **av, char **env)
 {
 	int fd[2];
 
@@ -21,7 +21,7 @@ void pipex(char **av, char **env)
 	int sfile = open_file(av[4], 1);
 
 	if (-1 == pipe(fd))
-		mah();
+		mah(errno);
 
 	int pid = fork();
 
@@ -35,9 +35,12 @@ void pipex(char **av, char **env)
 
 		handle_files(ffile, sfile);
 
-		if (-1 == execve(cmds.left[0], cmds.left, env))
-			mah();
+		execve(cmds.left[0], cmds.left, env);
+		pipex_free(cmds, fd, newenv);
+		exit(EXIT_FAILURE);
 	}
+
+	
 
 	int pid2 = fork();
 
@@ -51,14 +54,18 @@ void pipex(char **av, char **env)
 
 		handle_files(ffile, sfile);
 
-		if (-1 == execve(cmds.right[0], cmds.right, env))
-			mah();
+		execve(cmds.right[0], cmds.right, env);
+		pipex_free(cmds, fd, newenv);
+		exit(EXIT_FAILURE);
 	}
+
+	int status = 0;
 
 	handle_files(ffile, sfile);
 	pipex_free(cmds, fd, newenv);
-	pipex_wait(pid, pid);
+	pipex_wait(pid, pid2, &status);
 
+	return WEXITSTATUS(status);
 }
 
 
@@ -72,7 +79,7 @@ int main(int ac, char **av, char **env)
 		exit(EXIT_FAILURE);
 	}
 
-	pipex(av, env);
+	int es = pipex(av, env);
 
-	return 0;
+	return es;
 }
