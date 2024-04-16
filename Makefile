@@ -11,7 +11,7 @@ PRINTF = $(PRINTFPATH)libftprintf.a
 CC = cc
 DEBUG = -fsanitize=address
 WFLAGS = -Wall -Wextra -Werror
-CFLAGS = $(WFLAGS) $(foreach H,$(INCPATH),-I$(H)) #$(DEBUG)
+CFLAGS =  $(foreach H,$(INCPATH),-I$(H)) #$(DEBUG)
 
 all : $(NAME)
 

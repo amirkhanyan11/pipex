@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:43:17 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/06 19:05:21 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/16 20:49:19 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 # include "ft_printf.h"
 # include <errno.h>
 # include <fcntl.h>
-#include <sys/types.h> 
+#include <sys/types.h>
 #include <sys/wait.h>
 
 
-typedef struct s_cmd
+typedef struct s_cmds
 {
 	char **left;
 	char **right;
@@ -28,7 +28,7 @@ typedef struct s_cmd
 
 
 int open_file(char *name, int mode);
-int pipex(char **av, char **env);
+void pipex(char **av, char **env);
 void pipex_free(t_cmds cmds, int * fd, char **newenv);
 void pipex_wait(int pid, int pid2, int *status);
 
