@@ -6,18 +6,18 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 18:38:19 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/05 18:39:26 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:21:38 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void ft_free_split(char **arr)
+void	ft_free_split(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(arr[i])
+	while (arr[i])
 		free(arr[i++]);
 	free(arr);
 }

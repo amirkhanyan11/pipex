@@ -1,106 +1,72 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_handle.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 14:22:35 by aamirkha          #+#    #+#             */
+/*   Updated: 2024/04/20 17:22:10 by aamirkha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-
-char *get_path(char **env)
+char	**__slice(char *path)
 {
-	int i = 0;
-	char *t;
+	char	**arr;
 
-	while (env[i])
-	{
-		t = ft_strnstr(env[i], "PATH=", ft_strlen(env[i]));
-		if (NULL != t)
-		{
-			while(*t != '/')
-				t++;
-			return (ft_strdup(t));
-		}
-		i++;
-	}
-	return NULL;
-}
-
-char	*ft_append(char *left, char  * right)
-{
-	char	*target;
-	size_t	i;
-	size_t	j;
-	size_t	k;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	target = (char *)malloc(ft_strlen(left) + ft_strlen(right) + 1);
-	if (!target)
-		return NULL;
-	while (left[i] || right[j])
-	{
-		if (left[i])
-			target[k++] = left[i++];
-		else
-			target[k++] = right[j++];
-	}
-	target[k] = '\0';
-	free(left);
-	return target;
-}
-
-char **__slice(char *path)
-{
-	char **arr = ft_split(path, ':');
+	arr = ft_split(path, ':');
 	free(path);
-	return arr;
+	return (arr);
 }
 
-
-void mah(int err)
+void	__terminate(int err)
 {
 	perror(strerror(err));
 	exit(EXIT_FAILURE);
 }
 
-char *current_lookup(char *cmd, char *path)
+char	*current_lookup(char *cmd, char *path)
 {
 	path = ft_strdup(path);
 	path = ft_append(path, "/");
 	path = ft_append(path, cmd);
-
 	if (0 == access(path, F_OK))
-		return path;
-
+		return (path);
 	free(path);
 	return (NULL);
 }
 
-char *cmd_lookup(char *cmd, char **newenv)
+char	*cmd_lookup(char *cmd, char **newenv)
 {
+	int		i;
+	char	*current;
 
-	int i = 0;
-	char * current = NULL;
+	i = 0;
+	current = NULL;
 	while (newenv[i])
 	{
 		current = current_lookup(cmd, newenv[i]);
 		if (0 != current)
-			break;
+			break ;
 		i++;
 	}
-
-	return current;
+	return (current);
 }
 
-t_cmds cmd_handle(char **av, char **newenv)
+t_cmds	cmd_handle(char **av, char **newenv)
 {
-	t_cmds res;
+	t_cmds	res;
+	char	*c1;
+	char	*c2;
 
 	res.left = ft_split(av[2], ' ');
 	res.right = ft_split(av[3], ' ');
-
-	char *c1 = cmd_lookup(res.left[0], newenv);
-	char *c2 = cmd_lookup(res.right[0], newenv);
-
+	c1 = cmd_lookup(res.left[0], newenv);
+	c2 = cmd_lookup(res.right[0], newenv);
 	if (!c1 || !c2)
-		perror("command not found");
-	
+		perror("pipex: command not found\n");
 	if (c1)
 	{
 		free(res.left[0]);
@@ -111,5 +77,5 @@ t_cmds cmd_handle(char **av, char **newenv)
 		free(res.right[0]);
 		res.right[0] = c2;
 	}
-	return res;
+	return (res);
 }
