@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 16:29:23 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/20 17:07:07 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/20 18:58:40 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 
 
-void	pipex_free(t_cmds *cmds, char **newenv)
+void	pipex_free(char** cmd, char **newenv)
 {
-	ft_free_split(cmds->left);
-	ft_free_split(cmds->right);
+	ft_free_split(cmd);
 	ft_free_split(newenv);
 }
 

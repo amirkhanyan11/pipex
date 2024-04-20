@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:35 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/20 17:22:10 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:04:15 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	__terminate(int err)
 char	*current_lookup(char *cmd, char *path)
 {
 	path = ft_strdup(path);
-	path = ft_append(path, "/");
-	path = ft_append(path, cmd);
+	path = ft_append_pipex(path, "/");
+	path = ft_append_pipex(path, cmd);
 	if (0 == access(path, F_OK))
 		return (path);
 	free(path);
@@ -55,27 +55,20 @@ char	*cmd_lookup(char *cmd, char **newenv)
 	return (current);
 }
 
-t_cmds	cmd_handle(char **av, char **newenv)
+char	**cmd_handle(char *avcmd,  char **newenv)
 {
-	t_cmds	res;
-	char	*c1;
-	char	*c2;
 
-	res.left = ft_split(av[2], ' ');
-	res.right = ft_split(av[3], ' ');
-	c1 = cmd_lookup(res.left[0], newenv);
-	c2 = cmd_lookup(res.right[0], newenv);
-	if (!c1 || !c2)
+	char **cmd = ft_split(avcmd, ' ');
+	char *c = cmd_lookup(cmd[0], newenv);
+
+
+	if (!c)
 		perror("pipex: command not found\n");
-	if (c1)
+	else
 	{
-		free(res.left[0]);
-		res.left[0] = c1;
+		free(cmd[0]);
+		cmd[0] = c;
 	}
-	if (c2)
-	{
-		free(res.right[0]);
-		res.right[0] = c2;
-	}
-	return (res);
+
+	return (cmd);
 }

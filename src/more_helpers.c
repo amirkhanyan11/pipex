@@ -6,13 +6,13 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:19:57 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/18 14:27:28 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/20 18:35:31 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*ft_append(char *left, char *right)
+char	*ft_append_pipex(char *left, char *right)
 {
 	char	*target;
 	size_t	i;

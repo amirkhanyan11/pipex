@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:43:17 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/20 17:15:12 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:04:34 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-
-typedef struct s_cmds
-{
-	char	**left;
-	char	**right;
-}			t_cmds;
 
 typedef struct s_env
 {
@@ -40,20 +34,20 @@ enum e_e
 };
 
 int			open_file(char *name, int mode);
-void		pipex(char **av, char **env);
-void		pipex_free(t_cmds *cmds, char **newenv);
+void		pipex(int ac, char **av, char **env);
+void		pipex_free(char **cmd, char **newenv);
 void		pipex_wait(int pid, int pid2, int *status);
-void	close_pipes(int *_pipes);
+void		close_pipes(int *_pipes);
 t_env		__env_arg(char **env, char **newenv);
-void childp(char *filename, int *_pipes, t_cmds *cmds, t_env _env);
+// void 		childp(char *filename, int *_pipes, t_cmds *cmds, t_env _env);
 
 char		*get_path(char **env);
 char		**__slice(char *path);
-t_cmds		cmd_handle(char **av, char **newenv);
+char	**cmd_handle(char *avcmd, char **newenv);
 
 char		*cmd_lookup(char *cmd, char **newenv);
 char		*current_lookup(char *cmd, char *path);
-char		*ft_append(char *left, char *right);
+char		*ft_append_pipex(char *left, char *right);
 int			iscmd(char *cmd, char **newenv);
 
 void		__terminate(int err);
