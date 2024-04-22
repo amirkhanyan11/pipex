@@ -6,60 +6,67 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:03 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/21 19:05:07 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/22 15:28:24 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-
-void childp(char *filename, int *_pipes, char *avcmd, t_env _env)
+void _exec(char *avcmd,  t_env _env)
 {
-	int _file = open_file(filename, READ);
-
 	char **cmd = cmd_handle(avcmd, _env.newenv);
-	dup2(_file, STDIN_FILENO);
-	dup2(_pipes[WRITE], STDOUT_FILENO);
-	close_pipes(_pipes);
-	close(_file);
 	execve(cmd[0], cmd, _env.env);
 	pipex_free(cmd, _env.newenv);
 	exit(EXIT_FAILURE);
 }
 
-void child2(char *filename, int *_pipes, char *avcmd, t_env _env)
+void pipinthisbitch(char *avcmd, t_env _env, int mode)
 {
-	int _file = open_file(filename, WRITE);
-	char **cmd = cmd_handle(avcmd, _env.newenv);
+	int _pipe[2];
 
-	dup2(_file, STDOUT_FILENO);
-	dup2(_pipes[READ], STDIN_FILENO);
-	close_pipes(_pipes);
-	close(_file);
-	execve(cmd[0], cmd, _env.env);
-	pipex_free(cmd, _env.newenv);
-	exit(EXIT_FAILURE);
+	if (-1 == pipe(_pipe))
+		__terminate(errno);
+
+	int pid = fork();
+	if (-1 == pid)
+		__terminate(errno);
+	if (0 == pid)
+	{
+		close(_pipe[READ]);
+		if (LAST != mode)
+			dup2(_pipe[WRITE], STDOUT_FILENO);
+		_exec(avcmd, _env);
+	}
+	close(_pipe[WRITE]);
+	dup2(_pipe[READ], STDIN_FILENO); // yeeeah wireeee
 }
 
 void	pipex(int ac, char **av, char **env)
 {
-	int		_pipes[2];
 	char	**newenv;
-	int		pid;
 
 	newenv = __slice(get_path(env));
-	if (-1 == pipe(_pipes))
-		__terminate(errno);
-	pid = fork();
-	if (0 == pid)
-		childp(av[1], _pipes, av[2], __env_arg(env, newenv));
+	t_env _env = __env_arg(env, newenv);
 
-	pid = fork();
-	if (0 == pid)
-		child2(av[ac - 1], _pipes, av[ac - 2], __env_arg(env, newenv));
+	int infile = open_file(av[1], READ);
+	int outfile = open_file(av[ac - 1], WRITE);
 
+	dup2(infile, STDIN_FILENO);
+
+	int i = 2;
+	while (i < ac - 1)
+	{
+		int mode = (ac - 2 == i);
+		if (LAST == mode)
+			dup2(outfile, STDOUT_FILENO);
+		pipinthisbitch(av[i++], _env, mode);
+	}
+
+
+	close(infile);
+	close(outfile);
 	ft_free_split(newenv);
-	close_pipes(_pipes);
+
 }
 
 
@@ -72,8 +79,10 @@ int	main(int ac, char **av, char **env)
 		perror("pipex: ./pipex intfile cmd1 cmd2 outfile\n");
 		exit(EXIT_FAILURE);
 	}
+
 	pipex(ac, av, env);
 	while (-1 != wait(NULL))
 		(void)ac;
+	// execve(av[1], NULL, NULL	);
 	return (1);
 }

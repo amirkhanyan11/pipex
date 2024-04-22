@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:35 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/20 19:04:15 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/22 15:28:07 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,21 @@ char	**cmd_handle(char *avcmd,  char **newenv)
 	char *c = cmd_lookup(cmd[0], newenv);
 
 
-	if (!c)
-		perror("pipex: command not found\n");
-	else
+	if (NULL != c)
 	{
 		free(cmd[0]);
 		cmd[0] = c;
 	}
+	else if (0 == access(avcmd, F_OK | X_OK))
+	{
+		free(cmd[0]);
+		char *t = ft_strdup("./");
+		cmd[0] = ft_append_pipex(t, avcmd);
+		ft_putstr_fd(cmd[0], 2);
+	}
+
+	else
+		perror("pipex: command not found\n");
 
 	return (cmd);
 }

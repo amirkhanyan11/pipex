@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:43:17 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/20 19:04:34 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:33:48 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ enum e_e
 	FIRST = 0,
 	SECOND = 1,
 	READ = 0,
-	WRITE = 1
+	WRITE = 1,
+	LAST = 1
 };
 
 int			open_file(char *name, int mode);
