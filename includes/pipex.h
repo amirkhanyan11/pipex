@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:43:17 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/22 16:07:45 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:49:17 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPEX_H
 
 # include "ft_printf.h"
+# include "get_next_line.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <sys/types.h>
@@ -31,7 +32,8 @@ enum e_e
 	SECOND = 1,
 	READ = 0,
 	WRITE = 1,
-	LAST = 1
+	LAST = 1,
+	HERE_DOC = 2
 };
 
 int			open_file(char *name, int mode);

@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:35 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/22 16:59:33 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:48:50 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ char **addbash(char **prev, char **newenv)
 	return newcmd;
 }
 
+char *is_script(char *avcmd)
+{
+	return (ft_strchr(avcmd, '/'));
+}
+
 char	**cmd_handle(char *avcmd,  char **newenv)
 {
 
@@ -98,7 +103,7 @@ char	**cmd_handle(char *avcmd,  char **newenv)
 		free(cmd[0]);
 		cmd[0] = c;
 	}
-	else if (0 == access(avcmd, F_OK | X_OK))
+	else if (is_script(avcmd) && 0 == access(avcmd, F_OK | X_OK))
 	{
 		return addbash(cmd, newenv);
 	}
