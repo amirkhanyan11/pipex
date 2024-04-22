@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:43:17 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/22 14:33:48 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:07:45 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ char		*current_lookup(char *cmd, char *path);
 char		*ft_append_pipex(char *left, char *right);
 int			iscmd(char *cmd, char **newenv);
 
-void		__terminate(int err);
+void	__terminate(char *err);
 
 #endif // PIPEX_H

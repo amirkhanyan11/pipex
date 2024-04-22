@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:03 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/22 15:28:24 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:04:15 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void pipinthisbitch(char *avcmd, t_env _env, int mode)
 	int _pipe[2];
 
 	if (-1 == pipe(_pipe))
-		__terminate(errno);
+		__terminate(strerror(errno));
 
 	int pid = fork();
 	if (-1 == pid)
-		__terminate(errno);
+		__terminate(strerror(errno));
 	if (0 == pid)
 	{
 		close(_pipe[READ]);
@@ -62,7 +62,6 @@ void	pipex(int ac, char **av, char **env)
 		pipinthisbitch(av[i++], _env, mode);
 	}
 
-
 	close(infile);
 	close(outfile);
 	ft_free_split(newenv);
@@ -83,6 +82,6 @@ int	main(int ac, char **av, char **env)
 	pipex(ac, av, env);
 	while (-1 != wait(NULL))
 		(void)ac;
-	// execve(av[1], NULL, NULL	);
+		
 	return (1);
 }

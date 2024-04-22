@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:35 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/22 15:28:07 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:59:33 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ char	**__slice(char *path)
 	return (arr);
 }
 
-void	__terminate(int err)
+void	__terminate(char *err)
 {
-	perror(strerror(err));
+	perror(err);
 	exit(EXIT_FAILURE);
 }
 
@@ -55,6 +55,37 @@ char	*cmd_lookup(char *cmd, char **newenv)
 	return (current);
 }
 
+char **addbash(char **prev, char **newenv)
+{
+	int i = 0;
+
+	while (prev[i])
+	{
+		i++;
+	}
+
+	char **newcmd = malloc(sizeof(char *) * (i + 2));
+
+	if (NULL == newcmd)
+		__terminate("pipex: bad alloc\n");
+
+
+	newcmd[0] = cmd_lookup("bash", newenv);
+
+	if (NULL == newcmd[0])
+		__terminate("pipex: bash not found\n");
+
+	int j = 0;
+	while (prev[j])
+	{
+		newcmd[j + 1] = prev[j];
+		j++;
+	}
+	newcmd[j + 1] = prev[j];
+
+	return newcmd;
+}
+
 char	**cmd_handle(char *avcmd,  char **newenv)
 {
 
@@ -69,14 +100,11 @@ char	**cmd_handle(char *avcmd,  char **newenv)
 	}
 	else if (0 == access(avcmd, F_OK | X_OK))
 	{
-		free(cmd[0]);
-		char *t = ft_strdup("./");
-		cmd[0] = ft_append_pipex(t, avcmd);
-		ft_putstr_fd(cmd[0], 2);
+		return addbash(cmd, newenv);
 	}
 
 	else
-		perror("pipex: command not found\n");
+		__terminate("pipex: command not found\n");
 
 	return (cmd);
 }
