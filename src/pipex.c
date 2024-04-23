@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:03 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/23 21:18:31 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:18:41 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	pipex(int ac, char **av, char **env)
 	if (!ft_strncmp(av[1], "here_doc", ft_strlen(av[1])))
 	{
 		here_doc(av);
-		outfile = open_file(av[ac - 1], WRITE | APPEND);
+		outfile = open_file(av[ac - 1], O_RDWR | O_CREAT);
 	}
 	else
 	{
-		outfile = open_file(av[ac - 1], WRITE);
-		infile = open_file(av[1], READ);
+		outfile = open_file(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC);
+		infile = open_file(av[1], O_RDONLY);
 		dup2(infile, STDIN_FILENO);
 	}
 	makepipe_wrapper(ac, av, outfile, _env);

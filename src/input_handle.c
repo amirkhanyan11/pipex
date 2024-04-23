@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:35 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/23 21:13:30 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/23 21:46:46 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ char	**cmd_handle(char *avcmd, char **newenv)
 		return (addbash(cmd, newenv));
 	}
 	else
-		__terminate("pipex: command not found ara eeeee\n");
+		__terminate("pipex: command not found\n");
 	return (cmd);
 }

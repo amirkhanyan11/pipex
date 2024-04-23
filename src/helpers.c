@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 16:29:23 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/23 17:25:25 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:19:10 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,11 @@ int	open_file(char *name, int mode)
 	int	fd;
 
 	if (READ == mode)
-		fd = open(name, O_RDONLY);
-	else if ((APPEND & mode) && (WRITE & mode))
-	{
-		fd = open(name, O_RDWR | O_CREAT, PERMISSIONS);
-		scroll(fd);
-	}
+		fd = open(name, mode);
 	else
-		fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, PERMISSIONS);
+		fd = open(name, mode, PERMISSIONS);
+	if ((O_RDWR | O_CREAT) == mode)
+		scroll(fd);
 	if (-1 == fd)
 		__terminate(strerror(errno));
 	return (fd);
