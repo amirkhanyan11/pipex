@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:19:57 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/20 18:35:31 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:49:27 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,19 @@ char	*get_path(char **env)
 	return (NULL);
 }
 
-t_env	__env_arg(char **env, char **newenv)
+t_env	env_init(char **env)
 {
 	t_env	_env;
 
-	_env.newenv = newenv;
+	_env.newenv = __slice(get_path(env));
 	_env.env = env;
 	return (_env);
+}
+
+void	wait_for_all(void)
+{
+	int	true;
+
+	while (-1 != wait(NULL))
+		true = (2 + 2 == 5);
 }

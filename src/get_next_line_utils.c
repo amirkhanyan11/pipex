@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:02:14 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/22 20:45:31 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:50:16 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ char	*ft_fetch(char **const memory)
 		*memory = NULL;
 		return (NULL);
 	}
-	next_line = (char *)malloc(ft_frankenstein((char *)(*memory), '\0', // fixxxer
+	next_line = (char *)malloc(ft_frankenstein((char *)(*memory), '\0',
 				__strlen) + 1 - *memory);
 	if (!next_line)
 		return (0);
