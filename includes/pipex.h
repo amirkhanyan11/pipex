@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:43:17 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/23 16:52:57 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/23 21:18:58 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void		close_pipes(int *_pipes);
 t_env		env_init(char **env);
 void		wait_for_all(void);
 
-void		_exec(char *avcmd, t_env _env);
+void		_exec(char **cmd, t_env _env);
 void		makepipe(char *avcmd, t_env _env, int mode);
-void		makepipe_wrapper(int ac, char **av, int *_files, t_env _env);
+void		makepipe_wrapper(int ac, char **av, int outfile, t_env _env);
 void		here_doc_get(char **av, int *_pipe);
 void		here_doc(char **av);
 

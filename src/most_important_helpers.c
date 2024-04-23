@@ -6,17 +6,14 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:40:42 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/23 16:49:39 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/23 21:17:29 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	_exec(char *avcmd, t_env _env)
+void	_exec(char **cmd, t_env _env)
 {
-	char	**cmd;
-
-	cmd = cmd_handle(avcmd, _env.newenv);
 	execve(cmd[0], cmd, _env.env);
 	pipex_free(cmd, _env.newenv);
 	exit(EXIT_FAILURE);
@@ -24,9 +21,11 @@ void	_exec(char *avcmd, t_env _env)
 
 void	makepipe(char *avcmd, t_env _env, int mode)
 {
-	int	_pipe[2];
-	int	pid;
+	int		_pipe[2];
+	int		pid;
+	char	**cmd;
 
+	cmd = cmd_handle(avcmd, _env.newenv);
 	if (-1 == pipe(_pipe))
 		__terminate(strerror(errno));
 	pid = fork();
@@ -37,7 +36,7 @@ void	makepipe(char *avcmd, t_env _env, int mode)
 		close(_pipe[READ]);
 		if (LAST != mode)
 			dup2(_pipe[WRITE], STDOUT_FILENO);
-		_exec(avcmd, _env);
+		_exec(cmd, _env);
 	}
 	dup2(_pipe[READ], STDIN_FILENO);
 	close_pipes(_pipe);
@@ -61,8 +60,8 @@ void	here_doc_get(char **av, int *_pipe)
 
 void	here_doc(char **av)
 {
-	int		_pipe[2];
-	pid_t	pid;
+	int	_pipe[2];
+	int	pid;
 
 	if (pipe(_pipe) == -1)
 		__terminate(strerror(errno));
@@ -79,7 +78,7 @@ void	here_doc(char **av)
 	}
 }
 
-void	makepipe_wrapper(int ac, char **av, int *_files, t_env _env)
+void	makepipe_wrapper(int ac, char **av, int outfile, t_env _env)
 {
 	int	i;
 	int	mode;
@@ -89,7 +88,7 @@ void	makepipe_wrapper(int ac, char **av, int *_files, t_env _env)
 	{
 		mode = (i == ac - 2);
 		if (LAST == mode)
-			dup2(_files[WRITE], STDOUT_FILENO);
+			dup2(outfile, STDOUT_FILENO);
 		makepipe(av[i++], _env, mode);
 	}
 }

@@ -11,7 +11,7 @@ PRINTF = $(PRINTFPATH)libftprintf.a
 CC = cc
 DEBUG = -fsanitize=address
 WFLAGS = -Wall -Wextra -Werror
-CFLAGS =  $(foreach H,$(INCPATH),-I$(H)) $(DEBUG)
+CFLAGS =  $(foreach H,$(INCPATH),-I$(H)) $(WFLAGS)
 
 all : $(NAME)
 
@@ -21,7 +21,7 @@ $(NAME) : $(PRINTF) $(OBJS)
 $(PRINTF) :
 	make -C $(PRINTFPATH) all
 
-$(SRCSPATH)%.o : $(SRCSPATH)%.c Makefile # idk
+$(SRCSPATH)%.o : $(SRCSPATH)%.c Makefile
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
