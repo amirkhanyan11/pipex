@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:22:03 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/23 22:18:41 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:36:39 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	pipex(int ac, char **av, char **env)
 {
 	t_env	_env;
-	int infile;
-	int outfile;
+	int		infile;
+	int		outfile;
 
 	_env = env_init(env);
 	if (!ft_strncmp(av[1], "here_doc", ft_strlen(av[1])))
@@ -43,5 +43,6 @@ int	main(int ac, char **av, char **env)
 	if (ac < MIN_ARGS_ALLOWED)
 		__terminate("pipex: ./pipex infile cmd1 cmd2 outfile\n");
 	pipex(ac, av, env);
+	system("leaks pipex");
 	return (1);
 }

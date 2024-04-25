@@ -6,7 +6,7 @@
 /*   By: aamirkha <aamirkha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:40:42 by aamirkha          #+#    #+#             */
-/*   Updated: 2024/04/23 21:17:29 by aamirkha         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:38:42 by aamirkha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	makepipe(char *avcmd, t_env _env, int mode)
 		_exec(cmd, _env);
 	}
 	dup2(_pipe[READ], STDIN_FILENO);
+	ft_free_split(cmd);
 	close_pipes(_pipe);
 }
 
